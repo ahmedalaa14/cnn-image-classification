@@ -2,6 +2,9 @@
 
 This is a simple web application for image classification. It uses a pre-trained model to predict the class of an uploaded image.
 
+# Dataset
+- Cifar10 (https://www.kaggle.com/competitions/cifar-10)
+
 ## Requirements
 
 - Python 3.6 or later
