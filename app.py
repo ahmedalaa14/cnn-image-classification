@@ -1,34 +1,49 @@
-import streamlit as st
-from keras.models import load_model
-from PIL import Image
 import numpy as np
+import seaborn as sns
+import cv2
+import os
+from tensorflow.keras.models import Sequential
+from tensorflow.keras.layers import (
+    Dense,
+    Conv2D,
+    Flatten,
+    MaxPooling2D,
+    Dropout,
+    BatchNormalization,
+    Activation,
+)
+import tensorflow as tf
+from sklearn.metrics import *
+from sklearn.model_selection import train_test_split
+from tensorflow.keras import  datasets 
+from tqdm import tqdm
+import matplotlib.pyplot as plt
+from tensorflow.keras.models import load_model
+import PIL
+import streamlit as st
+model = load_model("cnn_model.keras")
 
-# Load the model
-Lrdetect_model = load_model('model1.h5')
 
-st.title('Image Classification Tool')
+def load_image():
+    image = st.sidebar.file_uploader("Upload Image", type=["png"], key="image")
+    
+    return image
 
-input_image = st.file_uploader('Upload an image', type=['jpg', 'jpeg', 'png'])
+image = load_image()
 
-if input_image is not None:
-    st.image(input_image, caption='Uploaded Image', use_column_width=True)
-    st.write('')
-    st.write('Classifying...')
+if image:
+    img_size = (32, 32, 3)
+    image = PIL.Image.open(image)
+    st.write("Original Image")
+    st.image(image, caption='Uploaded Image.')
+    image = image.resize((32, 32))
+    image = np.array(image)
+    X = np.zeros((1, *img_size))
+    X[0] = image
+    X = X / 255
+
+    y_pred = model.predict(X)
+    y_pred = np.argmax(y_pred, axis=1)
+    st.write(f"Prediction: {y_pred[0]}")
     
-    # Open the image file and convert it to a numpy array
-    image = Image.open(input_image).convert('RGB')
-    
-    # Resize and preprocess the image
-    image = image.resize((224, 224))  # assuming your model expects 224x224 images
-    image = np.array(image) / 255.0  # assuming your model expects pixel values in [0, 1]
-    
-    # Add an extra dimension for the batch size
-    image = np.expand_dims(image, axis=0)
-    
-    # Predict the class of the image
-    prediction = Lrdetect_model.predict(image)
-    
-    # Get the class with the highest probability
-    predicted_class = np.argmax(prediction)
-    
-    st.write('Predicted class:', predicted_class)
+
