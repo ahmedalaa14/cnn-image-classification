@@ -1,6 +1,6 @@
 # Image Classification Tool
 
-This is a simple web application for image classification. It uses a pre-trained model to predict the class of an uploaded image.
+- This is a simple web application for image classification. It uses a pre-trained model to predict the class of an uploaded image.
 
 # Dataset
 - Cifar10 (https://www.kaggle.com/competitions/cifar-10)
@@ -30,8 +30,7 @@ streamlit run app.py
 
 2. Open a web browser and go to http://localhost:8501.
 3. Upload an image using the file uploader.
-4. The app will classify the image and display the predicted class.
-Model
+4. The app will classify the image and display the predicted class Model.
 
 ## CNN Model
 
